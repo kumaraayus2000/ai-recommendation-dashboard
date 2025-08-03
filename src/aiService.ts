@@ -1,6 +1,7 @@
 // AI Service for Real AI Integration
 // Version: 1.0.0
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || 'your-api-key-here';
+const CLAUDE_API_KEY = process.env.REACT_APP_CLAUDE_API_KEY || 'your-claude-api-key-here';
 
 export interface AIRecommendation {
   product_id: number;
@@ -26,7 +27,7 @@ export class AIService {
   static async generateRecommendations(userProfile: UserProfile): Promise<AIRecommendation[]> {
     try {
       const prompt = `
-        Generate 3 personalized product recommendations for a user with the following profile:
+        Generate 6 personalized product recommendations for a user with the following profile:
         - Age: ${userProfile.age}
         - Gender: ${userProfile.gender}
         - Interests: ${userProfile.preferences.join(', ')}
@@ -43,6 +44,37 @@ export class AIService {
         Return as JSON array with fields: product_id, product_name, score, explanation, marketing_copy, price, category
       `;
 
+      // Try Claude first, fallback to OpenAI
+      try {
+        const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': CLAUDE_API_KEY,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-3-sonnet-20240229',
+            max_tokens: 2000,
+            messages: [
+              {
+                role: 'user',
+                content: prompt
+              }
+            ]
+          })
+        });
+
+        if (claudeResponse.ok) {
+          const claudeData = await claudeResponse.json();
+          const recommendations = JSON.parse(claudeData.content[0].text);
+          return recommendations;
+        }
+      } catch (claudeError) {
+        console.log('Claude API failed, trying OpenAI...');
+      }
+
+      // Fallback to OpenAI
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {

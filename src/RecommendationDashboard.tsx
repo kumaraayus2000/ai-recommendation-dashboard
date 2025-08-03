@@ -12,6 +12,7 @@ const RecommendationDashboard = () => {
   const [activeTab, setActiveTab] = useState('recommendations');
   const [useRealAI, setUseRealAI] = useState(false);
   const [version] = useState('1.0.0');
+  const [productActions, setProductActions] = useState<Record<number, {likes: number, dislikes: number, purchases: number}>>({});
 
   // Mock data for demonstration
   const mockUsers = {
@@ -48,6 +49,33 @@ const RecommendationDashboard = () => {
       explanation: "Combining technology and fitness, this smart watch tracks workouts while keeping you connected.",
       marketing_copy: "The perfect blend of tech and fitness! Monitor health and achieve your goals.",
       price: 399.99,
+      category: "Electronics"
+    },
+    {
+      product_id: 12,
+      product_name: "Wireless Earbuds",
+      score: 0.91,
+      explanation: "Perfect for your tech lifestyle! These premium wireless earbuds offer crystal clear sound for music and calls.",
+      marketing_copy: "Elevate your audio experience! Perfect for workouts, gaming, and daily use with amazing battery life.",
+      price: 129.99,
+      category: "Electronics"
+    },
+    {
+      product_id: 15,
+      product_name: "Fitness Tracker",
+      score: 0.87,
+      explanation: "Track your fitness goals with precision! This advanced fitness tracker monitors heart rate, steps, and sleep.",
+      marketing_copy: "Achieve your fitness goals faster! Get detailed insights into your health and performance.",
+      price: 89.99,
+      category: "Health"
+    },
+    {
+      product_id: 18,
+      product_name: "Gaming Mouse",
+      score: 0.89,
+      explanation: "Level up your gaming experience! This high-precision gaming mouse offers customizable buttons and RGB lighting.",
+      marketing_copy: "Dominate your games with precision! Ergonomic design for hours of comfortable gaming.",
+      price: 79.99,
       category: "Electronics"
     }
   ];
@@ -117,6 +145,36 @@ const RecommendationDashboard = () => {
     }
     
     setLoading(false);
+  };
+
+  const handleProductAction = (productId: number, action: 'like' | 'dislike' | 'buy') => {
+    setProductActions(prev => {
+      const current = prev[productId] || { likes: 0, dislikes: 0, purchases: 0 };
+      const updated = { ...current };
+      
+      switch(action) {
+        case 'like':
+          updated.likes += 1;
+          break;
+        case 'dislike':
+          updated.dislikes += 1;
+          break;
+        case 'buy':
+          updated.purchases += 1;
+          break;
+      }
+      
+      return { ...prev, [productId]: updated };
+    });
+    
+    // Show feedback
+    const messages = {
+      like: '👍 Product liked!',
+      dislike: '👎 Product disliked!',
+      buy: '🛒 Product added to cart!'
+    };
+    
+    alert(messages[action]);
   };
 
   const handleAskAI = async () => {
@@ -225,13 +283,22 @@ const RecommendationDashboard = () => {
       </div>
 
       <div className="flex gap-2 mt-4">
-        <button className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+        <button 
+          onClick={() => handleProductAction(rec.product_id, 'like')}
+          className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg text-sm font-medium transition-colors"
+        >
           👍 Like
         </button>
-        <button className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+        <button 
+          onClick={() => handleProductAction(rec.product_id, 'dislike')}
+          className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-medium transition-colors"
+        >
           👎 Dislike
         </button>
-        <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors">
+        <button 
+          onClick={() => handleProductAction(rec.product_id, 'buy')}
+          className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors"
+        >
           🛒 Buy
         </button>
       </div>

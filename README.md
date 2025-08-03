@@ -107,17 +107,18 @@ vercel --prod
 
 To enable real AI responses instead of mock data:
 
-1. **Get OpenAI API Key**
-   - Visit [OpenAI Platform](https://platform.openai.com/api-keys)
-   - Create a new API key
+1. **Get API Keys**
+   - **Claude API Key:** Visit [Anthropic Console](https://console.anthropic.com/)
+   - **OpenAI API Key:** Visit [OpenAI Platform](https://platform.openai.com/api-keys)
 
-2. **Set Environment Variable**
+2. **Set Environment Variables**
    ```bash
    # Create .env file
    cp env.example .env
    
-   # Edit .env and add your API key
-   REACT_APP_OPENAI_API_KEY=your-actual-api-key-here
+   # Edit .env and add your API keys
+   REACT_APP_CLAUDE_API_KEY=your-actual-claude-api-key-here
+   REACT_APP_OPENAI_API_KEY=your-actual-openai-api-key-here
    ```
 
 3. **Toggle AI Mode**
@@ -125,7 +126,8 @@ To enable real AI responses instead of mock data:
    - It will change to "🤖 Real AI"
    - Refresh recommendations to get AI-generated content
 
-**Note:** The app works perfectly without an API key using mock AI responses!
+**Note:** The app works perfectly without API keys using mock AI responses!
+**Priority:** Claude API is used first, with OpenAI as fallback.
 
 ## 📁 Project Structure
 

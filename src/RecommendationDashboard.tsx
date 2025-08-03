@@ -11,6 +11,7 @@ const RecommendationDashboard = () => {
   const [currentQuery, setCurrentQuery] = useState('');
   const [activeTab, setActiveTab] = useState('recommendations');
   const [useRealAI, setUseRealAI] = useState(false);
+  const [version] = useState('1.0.0');
 
   // Mock data for demonstration
   const mockUsers = {

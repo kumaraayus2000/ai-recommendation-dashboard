@@ -1,4 +1,5 @@
 // AI Service for Real AI Integration
+// Version: 1.0.0
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || 'your-api-key-here';
 
 export interface AIRecommendation {

@@ -219,4 +219,13 @@ This project is licensed under the MIT License.
 
 ---
 
-**Built with ❤️ using React, TypeScript, and Tailwind CSS** 
+**Built with ❤️ using React, TypeScript, and Tailwind CSS**
+
+---
+
+## 🎯 **Quick Start**
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run locally: `npm run dev`
+4. Deploy: `vercel --prod` 

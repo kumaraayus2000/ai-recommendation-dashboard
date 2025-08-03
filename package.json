@@ -24,8 +24,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   },
-  "keywords": ["react", "recommendation", "ai", "dashboard"],
-  "author": "",
+  "keywords": ["react", "recommendation", "ai", "dashboard", "openai", "typescript"],
+  "author": "Aayush Kumar",
   "license": "MIT",
   "type": "module"
 } 
